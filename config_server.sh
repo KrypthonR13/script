@@ -72,6 +72,26 @@ install_mariadb() {
   esac
 }
 
+# Fungsi untuk menginstal PHP dan dependensi
+install_php() {
+  case "$DISTRO" in
+  ubuntu | debian)
+    echo "Melakukan instalasi PHP dan dependensi..."
+    sudo apt install -y php libapache2-mod-php php-mysql php-cli php-curl php-zip php-mbstring php-xml php-bcmath php-intl
+    sudo systemctl restart apache2
+    ;;
+  centos | rhel | fedora)
+    echo "Melakukan instalasi PHP dan dependensi..."
+    sudo dnf install -y php php-mysqlnd php-cli php-common php-fpm php-curl php-zip php-mbstring php-xml php-bcmath php-intl
+    sudo systemctl restart httpd
+    ;;
+  *)
+    echo "Distribusi Linux tidak didukung oleh script ini."
+    exit 1
+    ;;
+  esac
+}
+
 # Fungsi untuk mengonfigurasi firewalld
 configure_firewalld() {
   if command -v firewall-cmd &>/dev/null; then
