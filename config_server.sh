@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Fungsi untuk mendeteksi jenis distribusi Linux
 detect_distro() {
   if [ -f /etc/os-release ]; then
     . /etc/os-release
@@ -15,7 +14,6 @@ detect_distro() {
   fi
 }
 
-# Fungsi untuk menonaktifkan SELinux
 disable_selinux() {
   if command -v sestatus &>/dev/null; then
     echo "Menonaktifkan SELinux..."
@@ -26,7 +24,6 @@ disable_selinux() {
   fi
 }
 
-# Fungsi untuk menginstal web server
 install_web_server() {
   case "$DISTRO" in
   ubuntu | debian)
@@ -49,7 +46,6 @@ install_web_server() {
   esac
 }
 
-# Fungsi untuk menginstal MariaDB Server
 install_mariadb() {
   case "$DISTRO" in
   ubuntu | debian)
@@ -72,7 +68,6 @@ install_mariadb() {
   esac
 }
 
-# Fungsi untuk menginstal PHP dan dependensi
 install_php() {
   case "$DISTRO" in
   ubuntu | debian)
@@ -92,7 +87,6 @@ install_php() {
   esac
 }
 
-# Fungsi untuk mengonfigurasi firewalld
 configure_firewalld() {
   if command -v firewall-cmd &>/dev/null; then
     echo "Mengonfigurasi firewalld untuk web server dan MariaDB..."
@@ -105,11 +99,11 @@ configure_firewalld() {
   fi
 }
 
-# Fungsi utama untuk menjalankan semua tugas
 main() {
   detect_distro
   disable_selinux
   install_web_server
+  install_php
   install_mariadb
   configure_firewalld
   echo "Instalasi web server dan MariaDB Server selesai!"
